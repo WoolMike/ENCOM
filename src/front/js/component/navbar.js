@@ -4,6 +4,13 @@ import emcop from "../../img/emcop2.jpg";
 import "../../styles/navbarstyles.css";
 
 export const Navbar = () => {
+	const excludePaths = ["/login", "/register"]; //insert in this array other paths where navbar is not wanted.
+	const shouldExcludeNavbar = excludePaths.includes(location.pathname);
+	const isSinglePage  = location.pathname.startsWith("/single/");
+	
+    if (shouldExcludeNavbar || isSinglePage) {
+        return null; // Don't render anything if the current path is included in excludePaths
+    }
 	return (
 		<div>
 			<nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -31,7 +38,7 @@ export const Navbar = () => {
 								<a class="nav-link" href="#">Traduccion</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" href="#">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+								<a className="nav-link" href="/login">Login <i class="fa-solid fa-right-to-bracket"></i></a>
 							</li>
 						</ul>
 					</div>

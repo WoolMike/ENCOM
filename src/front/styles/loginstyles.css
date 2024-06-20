@@ -1,0 +1,42 @@
+
+.imagenfondo{
+display: flex;
+flex-direction: column;
+ background-image: url("https://img.freepik.com/vector-gratis/fondo-cerebro-degradado_23-2150516335.jpg?w=826&t=st=1718832592~exp=1718833192~hmac=1f7d64944652e6c0085cf2f5948945ac724d60d01abaed5dc1a3dd0a86bc8898");
+ background-size: cover !important;  
+ height: 110vh;
+ overflow: hidden; 
+ background-color: aqua;
+}
+
+.loginbox{
+    container: fluid;
+    height: 500px;
+    width: 500px;
+    text-align: center;
+    align-self: center; 
+}
+.box{
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    height: 950px;
+}
+.botonconfirmar{
+    width: 50%;
+    text-align: left;
+    margin-left: 5px;
+}
+.botonhome{
+    text-align: right;
+    width: 50%;
+    
+
+}
+
+.botoneshomeyconfirmar{
+    display: flex;
+}
+.diseñobotonhome{
+    color: white;
+}
