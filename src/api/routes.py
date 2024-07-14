@@ -70,7 +70,7 @@ def login():
 
 
 @api.route("/protected", methods=["GET"])
-@jwt_required()it
+@jwt_required()
 def private():
     email = get_jwt_identity()
 
