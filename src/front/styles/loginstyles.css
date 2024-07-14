@@ -6,7 +6,6 @@ flex-direction: column;
  background-size: cover !important;  
  height: 110vh;
  overflow: hidden; 
- background-color: aqua;
 }
 
 .loginbox{

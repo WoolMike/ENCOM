@@ -1,7 +1,23 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.fondolanding{
+    display: flex;
+    background-image: url('https://img.freepik.com/vector-gratis/fondo-conexion-red-degradado_23-2148904201.jpg?w=1380&t=st=1718845542~exp=1718846142~hmac=7e5d7ae343663373b960cab12ec19f83acc6a98a7c4497bb9f8444a753614199');
+    background-size: auto;
+    background-size: cover !important; /* Change this line */
+    height: 50vh;
+    width: auto;
+    overflow: hidden;
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.titulolanding{
+    color: whitesmoke;
+    margin-left: 30px;
+    margin-top: 45px;
+}
+
+.textojustificado{
+    text-align: justify;
+}
+
+.textocentrado{
+    text-align: center;
+}

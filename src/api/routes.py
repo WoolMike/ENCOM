@@ -1,10 +1,22 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+import os
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from random import sample, choice, randint
+from datetime import datetime, timedelta
+from sqlalchemy import or_, and_
+
+
+# import firebase_admin
+# from firebase_admin import credentials, storage
+
 
 api = Blueprint('api', __name__)
 
@@ -20,3 +32,50 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+#Creacion de usuario
+@api.route("/signup",methods=["POST"])
+def signup():
+    email = request.json.get("email", None)
+    name=request.json.get("name", None)
+    lastname=request.json.get("lastname",None)
+    password = request.json.get("password", None)
+
+    if email is None:
+        return jsonify({"msg":"missing email"}),404
+    if name is None:
+        return jsonify({"msg":"missing name"}),404
+    if password is None:
+        return jsonify({"msg":"missing password"}),404
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"msg": "This email is already associated with an account"}), 403
+    
+    
+    new_user = User(email=email, name=name,lastname=lastname,password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    access_token=create_access_token(identity = new_user.email, expires_delta=timedelta(hours=3))
+    return jsonify({"msg":"User created successfully", "token": access_token})
+
+@api.route("/login",methods=["POST"])
+def login():
+    email=request.json.get("email",None)
+    password=request.json.get("password",None)
+    user=User.query.filter_by(email=email,password=password).one_or_none()
+    if user is None:
+        return jsonify({"msg":"User not Found"}),404
+    access_token=create_access_token(identity=user.email, expires_delta=timedelta(hours=3))
+    return jsonify(user=user.serialize(),access_token=access_token)
+
+
+@api.route("/protected", methods=["GET"])
+@jwt_required()it
+def private():
+    email = get_jwt_identity()
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "User not found"}), 404
+    
+    return jsonify(user.serialize())

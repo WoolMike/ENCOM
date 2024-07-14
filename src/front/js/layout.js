@@ -8,6 +8,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
+import { Eventos } from "./pages/eventos";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -31,6 +32,7 @@ const Layout = () => {
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Login/>} path="/login"/>
                         <Route element={<Register/>} path="/register"/>
+                        <Route element={<Eventos/>} path="/eventos"/>
 
                         <Route element={<Single />}  path="/single/:theid" />
                         

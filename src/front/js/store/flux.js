@@ -13,7 +13,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+
+			token:localStorage.getItem("token") || null,
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,6 +49,63 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+
+			},
+			 registerUser:async (name,lastname,email,password)=>{
+			 	try{
+			 		let datos={
+			 			email:email,
+						name:name,
+						lastname:lastname,
+			 			password:password
+			 		};
+					const resp=await fetch(process.env.BACKEND_URL+"/api/signup",{
+						method:"POST",
+						headers:{"Content-Type":"application/json",
+						},
+						body:JSON.stringify(datos),
+					});
+					const data=await resp.json();
+					if(!resp.ok){
+						throw new Error(data.msg);
+					}
+					localStorage.setItem("token",data.token);
+					setStore({token:data.token})
+					return true;
+				}catch(error){
+					console.error;
+					return false;
+				}
+			},
+			loginUser: async(email,password)=> {
+				const opts={
+					method:"POST",
+					headers:{
+						"Content-Type":"application/json"
+					},
+					body:JSON.stringify({
+						"email":email,
+						"password":password
+					})
+				}
+				try{
+					const resp= await fetch(process.env.BACKEND_URL+"/api/login",opts)
+					const data= await resp.json();
+					if(!resp.ok){
+						throw new Error(data.msg)
+					}
+					localStorage.setItem("token",data.acces_token);
+					setStore({token:data,acces_token})
+					return true;
+				}catch(error){
+					return false
+				}
+				
+
+			},
+			logoutUser: ()=>{
+				localStorage.removeItem("token");
+				setStore({token:null});
 			}
 		}
 	};
