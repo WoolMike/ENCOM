@@ -29,4 +29,4 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
-    
+# class Cotizacion(db.Model):

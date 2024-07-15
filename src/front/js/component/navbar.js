@@ -4,7 +4,7 @@ import emcop from "../../img/emcop2.jpg";
 import "../../styles/navbarstyles.css";
 
 export const Navbar = () => {
-	const excludePaths = ["/login", "/register"]; //insert in this array other paths where navbar is not wanted.
+	const excludePaths = ["/login", "/register","/dashboard"]; //insert in this array other paths where navbar is not wanted.
 	const shouldExcludeNavbar = excludePaths.includes(location.pathname);
 	const isSinglePage  = location.pathname.startsWith("/single/");
 	
@@ -29,13 +29,13 @@ export const Navbar = () => {
 									Equipo
 								</a>
 								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">Video</a></li>
-									<li><a class="dropdown-item" href="#">Iluminacion</a></li>
+									<li><a class="dropdown-item" href="/video">Video</a></li>
+									<li><a class="dropdown-item" href="/iluminacion">Iluminacion</a></li>
 									<li><a class="dropdown-item" href="#">Audio</a></li>
 								</ul>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Traduccion</a>
+								<a class="nav-link" href="/traduccion">Traduccion</a>
 							</li>
 							<li className="nav-item">
 								<a className="nav-link" href="/login">Login <i class="fa-solid fa-right-to-bracket"></i></a>
