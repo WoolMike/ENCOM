@@ -2,6 +2,7 @@ import React, { useContext,useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/loginstyles.css";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
     const { store, actions } = useContext(Context);
@@ -11,15 +12,44 @@ export const Register = () => {
     const [lastname, setLastname] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [name, setName] = useState('');
-
+    const navigate=useNavigate();
 
     const handleInputChange=()=>{
         setErrorMessage('');
     };
 
-    // async function confirmUserRegister(){
-    //     const isUserRegister=await 
-    // }
+     const handleRegister=async()=>{
+        if (email==="" || password===""|| name===""|| lastname===""|| confirmpassword===""){
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: 'All fields are required',
+                background: "#263043",
+                color: "#FFFFFF",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            return        
+        }else if(password!==confirmpassword){
+            console.log("Las constraseñas no coinciden")
+            setConfirmpassword("")
+            setPassword("")
+
+        }else{
+            console.log(email)
+            console.log(password)
+            const isRegistered=await actions.registerUser(name,lastname,email,password)
+            console.log(isRegistered)
+            if(isRegistered)
+            {
+                console.log("Usuario registrado")
+                navigate("/dashboard")
+                
+            }else{
+                console.log("usuario no registrado")
+            }
+        }
+     }
 
     return (
         <div className="imagenfondo">
@@ -88,7 +118,7 @@ export const Register = () => {
                                         <h3 ><a href="/" className="diseñobotonhome"><i class="fa-solid fa-house"></i></a></h3>
                                     </div>
                                     <div className="botonhome">
-                                        <button type="button" className="btn btn-success">Sign Up</button>
+                                        <button type="button" className="btn btn-success" onClick={handleRegister}>Sign Up</button>
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/loginstyles.css";
 import Swal from 'sweetalert2'
 
@@ -8,8 +9,10 @@ export const Login = () => {
     const {store,actions}=useContext(Context);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate=useNavigate();
 
     console.log("este es el token", store.token);
+
     const handleClick = async()=> {
         if (email==="" || password===""){
             Swal.fire({
@@ -27,10 +30,12 @@ export const Login = () => {
             console.log(email)
             console.log(password)
             const isLoged=await actions.loginUser(email,password)
+            console.log(store.token)
             console.log(isLoged)
             if(isLoged)
             {
                 console.log("Usuario logeado")
+                navigate("/dashboard")
             }else{
                 console.log("usuario no logeado")
             }

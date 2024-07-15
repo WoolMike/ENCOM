@@ -10,6 +10,7 @@ import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { Eventos } from "./pages/eventos";
 import injectContext from "./store/appContext";
+import { Dashboard } from "./pages/dashboard";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -33,9 +34,8 @@ const Layout = () => {
                         <Route element={<Login/>} path="/login"/>
                         <Route element={<Register/>} path="/register"/>
                         <Route element={<Eventos/>} path="/eventos"/>
-
+                        <Route element={<Dashboard/>} path="/dashboard"/>
                         <Route element={<Single />}  path="/single/:theid" />
-                        
                     </Routes>
                     <Footer />
                 </ScrollToTop>

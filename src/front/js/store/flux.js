@@ -16,6 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 
 			token:localStorage.getItem("token") || null,
+			profile:JSON.parse(localStorage.getItem("profile")||null)
 
 		},
 		actions: {
@@ -71,6 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					localStorage.setItem("token",data.token);
 					setStore({token:data.token})
+					getActions().getprofile()
 					return true;
 				}catch(error){
 					console.error;
@@ -89,24 +91,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				}
 				try{
-					const resp= await fetch(process.env.BACKEND_URL+"/api/login",opts)
-					const data= await resp.json();
+					const resp = await fetch(process.env.BACKEND_URL + "/api/login", opts)
+					const data = await resp.json();
 					if(!resp.ok){
 						throw new Error(data.msg)
 					}
-					localStorage.setItem("token",data.acces_token);
-					setStore({token:data,acces_token})
+					console.log("si se hizo el inicio de sesion")
+					localStorage.setItem("token" , data.access_token);
+					setStore({token:data.access_token})
+					getActions().getprofile()
+					console.log("regresa un true")
 					return true;
-				}catch(error){
+				}
+				catch(error){
 					return false
 				}
 				
 
 			},
-			logoutUser: ()=>{
+			logoutUser: () => {
 				localStorage.removeItem("token");
-				setStore({token:null});
-			}
+				localStorage.removeItem("profile");
+				setStore({token:null, profile:null});
+			},
+			getprofile:	async()	=>{
+				const store=getStore()
+
+				try{
+					const resp =await fetch(process.env.BACKEND_URL+"api/protected",{
+						method:'GET',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization":`Bearer ${store.token}`
+						},
+					})
+					if(!resp.ok){
+						console.log("no encontró el perfil")
+						return false;
+					}
+
+					const data = await resp.json();
+					localStorage.setItem("profile", JSON.stringify(data));
+					console.log(data)
+					setStore({profile:data})
+					return true
+				}
+				catch (error){
+					console.error("algo no funciono al buscar el perfil");
+				}
+			}	
 		}
 	};
 };
