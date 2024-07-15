@@ -7,8 +7,8 @@ export const Footer = () => (
 			<div className="col-6">
 				<ul>
 					<li className="list-group-item"><a href="/">Home</a></li>
-					<li className="list-group-item"><a href="#">About Us</a></li>
-					<li className="list-group-item"><a href="#">Contact Us</a></li>
+					<li className="list-group-item"><a href="/aboutus">About Us</a></li>
+					<li className="list-group-item"><a href="/contactus">Contact Us</a></li>
 				</ul>
 			</div>
 			<div className="col-6">

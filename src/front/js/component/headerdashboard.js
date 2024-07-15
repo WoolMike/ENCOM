@@ -15,9 +15,9 @@ export function Header() {
             <div>
                 <nav class="navbar bg-body-tertiary">
                     <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1"><h3>Bienvenido {store.profile && store.profile.name}</h3></span>
+                        <span class="navbar-brand mb-0 h1"><h3> <i class="fa-solid fa-user"></i> Bienvenido {store.profile && store.profile.name}</h3></span>
                         <Link to="/">
-                            <button type="button" class="btn btn-danger" onClick={actions.logoutUser}>LogOut</button>
+                            <button type="button" class="btn btn-danger" onClick={actions.logoutUser}>LogOut <i class="fa-solid fa-right-from-bracket"></i></button>
                         </Link>
 
                     </div>

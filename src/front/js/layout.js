@@ -12,6 +12,8 @@ import { Eventos } from "./pages/eventos";
 import {Video} from "./pages/video";
 import { Iluminacion } from "./pages/iluminaion";
 import { Traduccion } from "./pages/traduccion";
+import { ContactUs } from "./pages/contactus";
+import { AboutUs } from "./pages/aboutus";
 import injectContext from "./store/appContext";
 import { Dashboard } from "./pages/dashboard";
 
@@ -40,6 +42,8 @@ const Layout = () => {
                         <Route element={<Video/>} path="/video"/>
                         <Route element={<Iluminacion/>} path="/iluminacion"/>
                         <Route element={<Traduccion/>} path="/traduccion"/>
+                        <Route element={<ContactUs/>} path="/contactus"/>
+                        <Route element={<AboutUs/>} path="/aboutus"/>
                         <Route element={<Dashboard/>} path="/dashboard"/>
                         <Route element={<Single />}  path="/single/:theid" />
                     </Routes>
