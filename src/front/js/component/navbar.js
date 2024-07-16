@@ -29,9 +29,9 @@ export const Navbar = () => {
 									Equipo
 								</a>
 								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="/video">Video</a></li>
-									<li><a class="dropdown-item" href="/iluminacion">Iluminacion</a></li>
-									<li><a class="dropdown-item" href="#">Audio</a></li>
+									<li><a class="dropdown-item" href="/video"><i class="fa-solid fa-video"></i> Video </a></li>
+									<li><a class="dropdown-item" href="/iluminacion"><i class="fa-solid fa-lightbulb"></i> Iluminacion</a></li>
+									<li><a class="dropdown-item" href="/audio"> <i class="fa-solid fa-volume-high"></i> Audio</a></li>
 								</ul>
 							</li>
 							<li class="nav-item">
