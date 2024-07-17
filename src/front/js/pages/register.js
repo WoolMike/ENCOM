@@ -57,8 +57,8 @@ export const Register = () => {
                 <div className="loginbox">
                     <form>
                         <div>
-                            <h1>Register</h1>
-                            <h5>Don't have an account? <Link to="/login">Login</Link></h5>
+                            <h1 className="letrablanca">Register</h1>
+                            <h5 className="letrablanca">Don't have an account? <Link to="/login">Login</Link></h5>
                             <div>
                                 <div>
                                     <input type="text" 

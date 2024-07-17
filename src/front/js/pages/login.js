@@ -48,8 +48,8 @@ export const Login = () => {
                 <div className="loginbox">
                     <form>
                         <div>
-                            <h1 className="text-center">Login</h1>
-                            <h5 className="text-center">Don't have an account? <Link to="/register">Sign Up</Link></h5>
+                            <h1 className="letrablanca">Login</h1>
+                            <h5 className="letrablanca">Don't have an account? <Link to="/register">Sign Up</Link></h5>
                             <div className="row">
                                 <div>
                                     <input type="email" class="form-control" id="email" placeholder="Your Email"

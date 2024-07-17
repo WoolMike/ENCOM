@@ -139,6 +139,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error){
 					console.error("algo no funciono al buscar el perfil");
 				}
+			},
+			editProfile: async (newUser) => {
+				const store = getStore()
+				try {
+					const res = await fetch(process.env.BACKEND_URL + `/api/profile`, {
+						method: 'PUT',
+						body: JSON.stringify(
+							newUser
+						),
+						headers: {
+							'Content-Type': 'application/json',
+							"Authorization": `Bearer ${localStorage.getItem("token")}`
+						},
+					})
+					const data = await res.json();
+					if (res.ok) {
+						getActions().getProfile()
+						setStore({ profile: newUser })
+						localStorage.setItem("profile", JSON.stringify(newUser));
+						Swal.fire({
+							position: "center",
+							icon: "success",
+							title: data.mensaje,
+							background: "#263043",
+							color: "#FFFFFF",
+							showConfirmButton: false,
+							timer: 1500
+						});
+
+					}
+				} catch (error) {
+					return false
+
+				}
+
 			}	
 		}
 	};

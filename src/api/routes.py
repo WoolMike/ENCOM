@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User
+from api.models import db, User, Favorite
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token
@@ -79,3 +79,80 @@ def private():
         return jsonify({"msg": "User not found"}), 404
     
     return jsonify(user.serialize())
+
+# @api.route("/favorites", methods=["POST"])
+# @jwt_required()
+# def addFavorite():
+#     favorite_user_id = request.json.get("favorite_user_id", None)
+    
+#     user_email = get_jwt_identity()
+
+#     user = User.query.filter_by(email=user_email).first()
+#     if user is None:
+#         return jsonify({"msg": "user not Found"}), 404
+
+#     new_favorite = Favorite(user_id=user.id, favorite_user_id=favorite_user_id)
+
+
+
+#     exist = Favorite.query.filter_by(user_id=user.id, favorite_user_id=favorite_user_id).first()
+#     if exist is not None:
+#         return jsonify({"msg": "The user is already in your favorites"}), 403
+    
+
+
+#     db.session.add(new_favorite)
+#     db.session.commit()
+
+# @api.route("/favorites/<int:id>", methods=["DELETE"])
+# @jwt_required()
+# def deleteFavorite(id):
+    
+#     user_email = get_jwt_identity()
+
+#     user = User.query.filter_by(email=user_email).first()
+#     if user is None:
+#         return jsonify({"msg": "user not Found"}), 404
+
+#     favorite = Favorite.query.filter_by(id=id).first()
+#     if favorite is None:
+#         return jsonify({"msg": "favorite not Found"}), 404
+
+
+
+    
+#     db.session.delete(favorite)
+#     db.session.commit()
+
+#     return jsonify({"msg":"user favorite deleted successful"})
+
+@api.route("/profile", methods=["PUT"])
+@jwt_required()
+def update_user():
+    # Fetch the user from the database
+    email = get_jwt_identity()
+
+    usuario = User.query.filter_by(email=email).first()
+
+    # Check if the user exists
+    if usuario is None:
+        return jsonify({"msg": "User not found"}), 404
+
+    # Get the updated data from the request
+    datos_usuario = request.get_json()
+
+    # Update the user's attributes
+
+    for key in datos_usuario:
+        for col in usuario.serialize():
+            if key == col and key != "id":
+                setattr(usuario, key, datos_usuario[key])
+
+    # Commit the changes to the database
+    db.session.commit()
+    db.session.refresh(usuario)
+
+    # Return a response
+    return jsonify({
+        'mensaje': 'Usuario actualizado con éxito',
+        'usuario': usuario.serialize()})
