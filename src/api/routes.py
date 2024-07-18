@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Favorite
+from api.models import db, User,Equipo,Cotizacion,Tipo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token
@@ -156,3 +156,30 @@ def update_user():
     return jsonify({
         'mensaje': 'Usuario actualizado con éxito',
         'usuario': usuario.serialize()})
+
+@api.route("/populate", methods=['POST'])
+def generate_database():
+
+    tipos=['Video','Iluminacion','Audio']
+    for tipo_name in tipos:
+        tipo= Tipo(name=tipo_name)
+        db.session.add(tipo)
+    db.session.commit()
+
+    tipo_ids={tipo.name: tipo.id for tipo in Tipo.query.all()}
+
+    equipos_data={
+        'Video':['Proyectores','Proyectores laser','Pantalla a medida'],
+        'Iluminacion':['Luces roboticas','Luces manuales','Lueces locas'],
+        'Audio': ['Bocina JBL','Bocina bose','Bocina hola']
+    }
+
+    for tipo_name,equipos in equipos_data.items():
+        tipo_id=tipo_ids.get(tipo_name)
+        if tipo_id:
+            for equipo_name in equipos:
+                equipo=Equipo(name=equipo_name,tipo_id=tipo_id)
+                db.session.add(equipo)
+    db.session.commit()
+
+    return jsonify({"msg":"Created"}),200

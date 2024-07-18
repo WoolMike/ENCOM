@@ -25,36 +25,106 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "name": self.name,
-            "lastname": self.lastname
+            "lastname": self.lastname,
+            "equipo":[equipo.serialize() for equipo in self.equipo] if self.equipo else None
             # do not serialize the password, its a security breach
         }
     
-# class Cotizacion(db.Model):
+class Tipo(db.Model):
+    id= db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(120), unique=True, nullable=False)
+    
+    def _init_(self,name):
+        self.name=name
+
+    def _repr_(self):
+        return f'<Tipo {self.name}>'
+
+    def serialize(self):
+        return{
+            "id":self.id,
+            "name":self.name
+        }    
+    
+
+class Equipo(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(120),unique=True, nullable=False)
+    
 
 
-class Favorite(db.Model):
-     id=db.Column(db.Integer, primary_key=True)
-     user_id=db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-     user=db.relationship("User", foreign_keys=[user_id],backref="favorites")
-     favorite_user_id=db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-     favorite_user=db.relationship("User", foreign_keys=[favorite_user_id], backref="favorited_by")
+    tipo_id=db.Column(db.Integer, db.ForeignKey('tipo.id'))
+    tipo=db.relationship("Tipo",backref="equipo")
 
-     def _init_(self,user_id,favorite_user_id):
-         self.user_id=user_id
-         self.favorite_user_id=favorite_user_id
+    def _repr_(self):
+        return f'<Equipo {self.name}>'
+    
+    def _init_(self,name,tipo_id):
+        self.name=name
+        self.tipo_id=tipo_id
 
-     def __repr__(self):
-         return f'<Favorite user_id:{self.user_id} favorite_user_id:{self.favorite_user_id}>'
+    def serialize(self):
+        return{
+            "id":self.id,
+            "name":self.name,
+            "tipo":self.tipo.name if self.tipo else None
+        }
 
-     def serialize(self):
-         return {
-             "id": self.id,
-             "user_id": self.user_id,
-             "favorite_user_id": self.favorite_user_id,
-             "favorite_user_name": self.favorite_user.name if self.favorite_user else None,
-             "favorite_user_country": self.favorite_user.country if self.favorite_user else None,
-             "favorite_user_city": self.favorite_user.city if self.favorite_user else None,
-             "favorite_user_gender": self.favorite_user.gender if self.favorite_user else None,
-             "favorite_user_image": self.favorite_user.image if self.favorite_user else None
+class Cotizacion(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    descripcion=db.Column(db.String(100),nullable=False)
 
-         }
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
+    user=db.relationship("User",backref="equipos")
+
+
+    
+    equipo_id=db.Column(db.Integer,db.ForeignKey('equipo.id'))
+    equipo=db.relationship("Equipo",backref="users")
+
+    def _repr_(self):
+        return f'<Cotizacion {self.id}>'
+    def _init_(self,descripcion,user_id,equipo_id):
+        self.descripcion=descripcion
+        self.user_id=user_id
+        self.equipo_id=equipo_id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user":self.user.name,
+            "equipo": self.equipo.name,
+            "equipo_precio":self.equipo.precio,
+            "descripcion":self.descripcion,
+            "user_id":self.user_id,
+            "equipo_id":self.equipo_id
+        }
+
+
+# class Favorite(db.Model):
+#      id=db.Column(db.Integer, primary_key=True)
+#      user_id=db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+#      user=db.relationship("User", foreign_keys=[user_id],backref="favorites")
+#      favorite_user_id=db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+#      favorite_user=db.relationship("User", foreign_keys=[favorite_user_id], backref="favorited_by")
+
+#      def _init_(self,user_id,favorite_user_id):
+#          self.user_id=user_id
+#          self.favorite_user_id=favorite_user_id
+
+#      def __repr__(self):
+#          return f'<Favorite user_id:{self.user_id} favorite_user_id:{self.favorite_user_id}>'
+
+#      def serialize(self):
+#          return {
+#              "id": self.id,
+#              "user_id": self.user_id,
+#              "favorite_user_id": self.favorite_user_id,
+#              "favorite_user_name": self.favorite_user.name if self.favorite_user else None,
+#              "favorite_user_country": self.favorite_user.country if self.favorite_user else None,
+#              "favorite_user_city": self.favorite_user.city if self.favorite_user else None,
+
+#              "favorite_user_gender": self.favorite_user.gender if self.favorite_user else None,
+#              "favorite_user_image": self.favorite_user.image if self.favorite_user else None
+
+#          }

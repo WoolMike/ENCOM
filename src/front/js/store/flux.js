@@ -143,7 +143,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editProfile: async (newUser) => {
 				const store = getStore()
 				try {
-					const res = await fetch(process.env.BACKEND_URL + `/api/profile`, {
+					const res = await fetch(process.env.BACKEND_URL + "api/profile", {
 						method: 'PUT',
 						body: JSON.stringify(
 							newUser
@@ -174,7 +174,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				}
 
-			}	
+			}
 		}
 	};
 };

@@ -10,6 +10,7 @@ import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { Eventos } from "./pages/eventos";
 import {Video} from "./pages/video";
+import { Profile } from "./pages/perfil";
 import { Iluminacion } from "./pages/iluminaion";
 import { Traduccion } from "./pages/traduccion";
 import { ContactUs } from "./pages/contactus";
@@ -47,6 +48,7 @@ const Layout = () => {
                         <Route element={<ContactUs/>} path="/contactus"/>
                         <Route element={<AboutUs/>} path="/aboutus"/>
                         <Route element={<Dashboard/>} path="/dashboard"/>
+                        <Route element={<Profile/>} path="/perfil"/>
                         <Route element={<Single />}  path="/single/:theid" />
                     </Routes>
                     <Footer />

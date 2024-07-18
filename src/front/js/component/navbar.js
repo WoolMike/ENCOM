@@ -4,7 +4,7 @@ import emcop from "../../img/emcop2.jpg";
 import "../../styles/navbarstyles.css";
 
 export const Navbar = () => {
-	const excludePaths = ["/login", "/register","/dashboard"]; //insert in this array other paths where navbar is not wanted.
+	const excludePaths = ["/login", "/register","/dashboard","/perfil"]; //insert in this array other paths where navbar is not wanted.
 	const shouldExcludeNavbar = excludePaths.includes(location.pathname);
 	const isSinglePage  = location.pathname.startsWith("/single/");
 	
