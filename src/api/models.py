@@ -26,7 +26,7 @@ class User(db.Model):
             "email": self.email,
             "name": self.name,
             "lastname": self.lastname,
-            "equipo":[equipo.serialize() for equipo in self.equipo] if self.equipo else None
+            "equipos":[equipo.serialize() for equipo in self.equipos] if self.equipos else None
             # do not serialize the password, its a security breach
         }
     
@@ -72,7 +72,7 @@ class Equipo(db.Model):
 
 class Cotizacion(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    descripcion=db.Column(db.String(100),nullable=False)
+    cantidad=db.Column(db.String(80),nullable=False)
 
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
     user=db.relationship("User",backref="equipos")
@@ -84,8 +84,10 @@ class Cotizacion(db.Model):
 
     def _repr_(self):
         return f'<Cotizacion {self.id}>'
-    def _init_(self,descripcion,user_id,equipo_id):
-        self.descripcion=descripcion
+    
+    
+    def _init_(self,cantidad,user_id,equipo_id):
+        self.cantidad=cantidad
         self.user_id=user_id
         self.equipo_id=equipo_id
 
@@ -94,8 +96,7 @@ class Cotizacion(db.Model):
             "id": self.id,
             "user":self.user.name,
             "equipo": self.equipo.name,
-            "equipo_precio":self.equipo.precio,
-            "descripcion":self.descripcion,
+            "cantidad":self.cantidad,
             "user_id":self.user_id,
             "equipo_id":self.equipo_id
         }

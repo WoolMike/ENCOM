@@ -3,3 +3,15 @@
     width: 60px;
     height: 30px;
 }
+.coloresnav{
+    color: aliceblue;
+    background-color: rgb(34, 34, 34);
+}
+
+.vistas{
+    color: aliceblue;
+}
+.vistas:hover{
+    color:#cf1259;
+    transition: all .3s ease-in;
+}

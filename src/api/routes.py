@@ -12,6 +12,7 @@ from flask_jwt_extended import jwt_required
 from random import sample, choice, randint
 from datetime import datetime, timedelta
 from sqlalchemy import or_, and_
+# import request
 
 
 # import firebase_admin
@@ -80,51 +81,10 @@ def private():
     
     return jsonify(user.serialize())
 
-# @api.route("/favorites", methods=["POST"])
-# @jwt_required()
-# def addFavorite():
-#     favorite_user_id = request.json.get("favorite_user_id", None)
-    
-#     user_email = get_jwt_identity()
-
-#     user = User.query.filter_by(email=user_email).first()
-#     if user is None:
-#         return jsonify({"msg": "user not Found"}), 404
-
-#     new_favorite = Favorite(user_id=user.id, favorite_user_id=favorite_user_id)
-
-
-
-#     exist = Favorite.query.filter_by(user_id=user.id, favorite_user_id=favorite_user_id).first()
-#     if exist is not None:
-#         return jsonify({"msg": "The user is already in your favorites"}), 403
-    
-
-
-#     db.session.add(new_favorite)
-#     db.session.commit()
-
-# @api.route("/favorites/<int:id>", methods=["DELETE"])
-# @jwt_required()
-# def deleteFavorite(id):
-    
-#     user_email = get_jwt_identity()
-
-#     user = User.query.filter_by(email=user_email).first()
-#     if user is None:
-#         return jsonify({"msg": "user not Found"}), 404
-
-#     favorite = Favorite.query.filter_by(id=id).first()
-#     if favorite is None:
-#         return jsonify({"msg": "favorite not Found"}), 404
-
-
-
-    
-#     db.session.delete(favorite)
-#     db.session.commit()
-
-#     return jsonify({"msg":"user favorite deleted successful"})
+@api.route("/users",methods=["GET"])
+def get_users():
+    users=User.query.all()
+    return jsonify([user.serialize() for user in users]),200
 
 @api.route("/profile", methods=["PUT"])
 @jwt_required()
@@ -183,3 +143,57 @@ def generate_database():
     db.session.commit()
 
     return jsonify({"msg":"Created"}),200
+
+#muetra los tipos de equipos
+@api.route("/tipos",methods=["GET"])
+def get_tipos():
+
+    tipos=Tipo.query.all()
+    return jsonify([tipo.serialize() for tipo in tipos]),200
+
+#muestra los tipos en especifico
+@api.route("/tipos/<int:id>",methods=["GET"])
+def get_tipos_especifico(id):
+
+    tipo=Tipo.query.filter_by(id=id).first()
+
+    if tipo is None:
+        return jsonify({"msg":"Tipo no encontrado"}),404
+    
+    return jsonify(tipo.serialize())
+
+@api.route("/equipos",methods=["GET"])
+def get_equipos():
+
+    equipos=Equipo.query.all()
+    return jsonify([equipo.serialize() for equipo in equipos]), 200
+
+
+@api.route("/cotizacion",methods=["POST"])
+@jwt_required()
+def crear_cotizacion():
+    email=get_jwt_identity()
+
+    user=User.query.filter_by(email=email).first()
+
+    if user is None:
+        return jsonify({"msg":"Usuario no encontrado"}),404
+    
+    cantidad=request.json.get("cantidad",None)
+    equipo=request.json.get("equipo",None)
+
+    if cantidad is None:
+        return jsonify({"msg":"falta la cantidad"}),404
+    if equipo is None:
+        return jsonify({"msg":"falta el equipo"}),404
+
+    if isinstance(equipo,int) and isinstance(cantidad,str):
+        new_cotizacion=Cotizacion(cantidad=cantidad, user_id=user.id, equipo_id=equipo)
+        db.session.add(new_cotizacion)
+        db.session.commit()
+        msg="Cotizacon registrada"
+        return jsonify({"msg":msg, "detalles":new_cotizacion.serialize()})
+    else:
+        return jsonify({"msg":"invalid data type"}),400
+    
+

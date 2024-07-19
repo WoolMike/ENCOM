@@ -16,7 +16,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 
 			token:localStorage.getItem("token") || null,
-			profile:JSON.parse(localStorage.getItem("profile")||null)
+			profile:JSON.parse(localStorage.getItem("profile")||null),
+			equipos:null,
+			tipos:null
 
 		},
 		actions: {
@@ -143,7 +145,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editProfile: async (newUser) => {
 				const store = getStore()
 				try {
-					const res = await fetch(process.env.BACKEND_URL + "api/profile", {
+					const resp = await fetch(process.env.BACKEND_URL + "api/profile", {
 						method: 'PUT',
 						body: JSON.stringify(
 							newUser
@@ -153,8 +155,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": `Bearer ${localStorage.getItem("token")}`
 						},
 					})
-					const data = await res.json();
-					if (res.ok) {
+					const data = await resp.json();
+					if (resp.ok) {
 						getActions().getProfile()
 						setStore({ profile: newUser })
 						localStorage.setItem("profile", JSON.stringify(newUser));
@@ -174,7 +176,80 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				}
 
-			}
+			},
+			getEquipos: async()=>{
+				const store=getStore()
+
+				try{
+					const resp =await fetch(process.env.BACKEND_URL+"/api/equipos",{
+						method:'GET',
+						headers:{
+							"Content-Type":"application/json"
+						},
+					})
+					if(!resp.ok){
+						throw new Error(data.msg)
+					}
+					const data=await resp.json()
+					localStorage.setItem("equipos",JSON.stringify(data));
+					console.log(data)
+					setStore({equipos:data})
+					return true
+				}
+				catch(error){
+					console.log("Error al buscar los equipos en el backend",error)
+					return false
+				}
+			},
+			getTipos:async()=>{
+				const store=getStore()
+
+				try{
+					const resp =await fetch(process.env.BACKEND_URL+"/api/tipos",{
+						method:'GET',
+						headers:{
+							"Content-Type":"application/json"
+						},
+					})
+					if(!resp.ok){
+						throw new Error(data.msg)
+					}
+					const data=await resp.json()
+					localStorage.setItem("tipos",JSON.stringify(data));
+					console.log(data)
+					setStore({tipos:data})
+					return true
+				}
+				catch(error){
+					console.log("Error al buscar los tipos en el backend",error)
+					return false
+				}
+			},
+			 getCotizacion: async(equipo,cantidad)=>{
+			 	const store=getStore()
+			 	try{
+			 		const resp=await fetch(process.env.BACKEND_URL+"api/cotizacion",{
+			 			method:"POST",
+			 			body:JSON.stringify({
+			 				"equipo":equipo,
+							"cantidad":cantidad
+			 			}),
+						headers:{
+							"Content-Type":"application/json",
+							"Authorization":`Bearer ${store.token}`
+						},
+			 		})
+					const data=await resp.json()
+					if(!resp.ok){
+						console.log("no se creo la cotizacion")
+						throw new Error(data.msg)
+					}
+					return true
+			 	}catch(error){
+					console.log("valio barriga señor verga")
+					return false
+				}
+			 }
 		}
 	};
 };

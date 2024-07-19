@@ -14,7 +14,12 @@ export const Dashboard=()=>{
     return(
         <div>
             <Header/>
-            <h1>Este el el dashboard, ocupamos un header algo para que veas los pedidos hechos y cotizaciones y una imagen para saber que estamos logeados y el nombre del usuario</h1>
+
+            <h1>Cotizaciones</h1>
+
+            <div>
+            <button type="button" class="btn btn-primary">Crear cotizacion</button>
+            </div>
         </div>
     );
 };

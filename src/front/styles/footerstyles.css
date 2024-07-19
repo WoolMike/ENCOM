@@ -1,3 +1,18 @@
 .socialmediabox{
     margin-right: 30px;
 }
+
+.fondocolor{
+    background-color: #2c2c2c;
+    color: aliceblue;
+}
+
+.links{
+    color: aliceblue;
+    font-weight: bold;
+}
+
+.links:hover{
+    color: #cf1259;
+    transition: all .3s ease-in;
+}

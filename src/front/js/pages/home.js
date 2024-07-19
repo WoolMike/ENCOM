@@ -9,21 +9,21 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div>
+		<div className="fondogeneral">
 			<div className="fondolanding">
 				<div className="titulolanding">
-					<h1>Sonido de calidad pasion eterna.</h1>
+					<h1 className="letrahero"><strong>Sonido de calidad pasion eterna</strong></h1>
 					<h3 className="mt-3">Buscamos brindar servicio profesional de renta de equipo audiovisual para toda clase de eventos, desde eventos chicos hasta masivos, sin olvidarnos de  proporcionar atención y tranquilidad al cliente</h3>
-					<div className="text-end">
+					<div className="text-end me-5">
 						<img src={logoemcop}></img>
 					</div>
 				</div>
 			</div>
 			<div className="mt-5">
-				<div className="container">
+				<div className="container azulclaro">
 					<div className="row">
 						<div className="col-6">
-							<div>
+							<div className="diplay-flex">
 								<h3 className="textocentrado">¿Quienes somos?</h3>
 							</div>
 						</div>
@@ -33,7 +33,7 @@ export const Home = () => {
 					</div>
 				</div>
 				<div className="mt-5">
-					<div className="container">
+					<div className="container azul2">
 						<div className="row">
 							<div className="col-6">
 								<h3 className="textojustificado">
@@ -46,16 +46,22 @@ export const Home = () => {
 								</h3>
 							</div>
 							<div className="col-6">
-								<h3 className="textocentrado">¿Porque elegirnos?</h3>
+								<div className="display-flex">
+									<h3 className="textoporque">¿Porque elegirnos?</h3>
+								</div>
+								
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className="mt-5">
-					<div className="container">
+					<div className="container azul3">
 						<div className="row">
-							<h2 className="textocentrado">Nuestra mision</h2>
-							<h3 className="textojustificado textocentrado">Proporcionar soluciones audiovisuales innovadoras que mejoren la comunicación, faciliten el aprendizaje y enriquezcan el entretenimiento. Nos esforzamos por superar las expectativas de nuestros clientes mediante un enfoque centrado en la calidad, la eficiencia y la satisfacción del cliente.</h3>
+							<div className="display-flex">
+								<h2 className="nuestramision">Nuestra mision</h2>
+							</div>
+							
+							<h3 className="textojustificado ">Proporcionar soluciones audiovisuales innovadoras que mejoren la comunicación, faciliten el aprendizaje y enriquezcan el entretenimiento. Nos esforzamos por superar las expectativas de nuestros clientes mediante un enfoque centrado en la calidad, la eficiencia y la satisfacción del cliente.</h3>
 						</div>
 
 					</div>

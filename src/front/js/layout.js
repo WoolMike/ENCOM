@@ -12,6 +12,7 @@ import { Eventos } from "./pages/eventos";
 import {Video} from "./pages/video";
 import { Profile } from "./pages/perfil";
 import { Iluminacion } from "./pages/iluminaion";
+import { Cotizaciones } from "./pages/cotizaciones";
 import { Traduccion } from "./pages/traduccion";
 import { ContactUs } from "./pages/contactus";
 import { AboutUs } from "./pages/aboutus";
@@ -49,6 +50,7 @@ const Layout = () => {
                         <Route element={<AboutUs/>} path="/aboutus"/>
                         <Route element={<Dashboard/>} path="/dashboard"/>
                         <Route element={<Profile/>} path="/perfil"/>
+                        <Route element={<Cotizaciones/>} path="/cotizaciones"/>
                         <Route element={<Single />}  path="/single/:theid" />
                     </Routes>
                     <Footer />
