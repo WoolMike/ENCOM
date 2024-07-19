@@ -12,7 +12,7 @@ from flask_jwt_extended import jwt_required
 from random import sample, choice, randint
 from datetime import datetime, timedelta
 from sqlalchemy import or_, and_
-# import request
+import requests
 
 
 # import firebase_admin
@@ -40,6 +40,7 @@ def signup():
     email = request.json.get("email", None)
     name=request.json.get("name", None)
     lastname=request.json.get("lastname",None)
+    pais=request.json.get("pais",None)
     password = request.json.get("password", None)
 
     if email is None:
@@ -53,7 +54,7 @@ def signup():
         return jsonify({"msg": "This email is already associated with an account"}), 403
     
     
-    new_user = User(email=email, name=name,lastname=lastname,password=password)
+    new_user = User(email=email, name=name,lastname=lastname,pais=pais,password=password)
     db.session.add(new_user)
     db.session.commit()
     access_token=create_access_token(identity = new_user.email, expires_delta=timedelta(hours=3))
@@ -187,13 +188,23 @@ def crear_cotizacion():
     if equipo is None:
         return jsonify({"msg":"falta el equipo"}),404
 
-    if isinstance(equipo,int) and isinstance(cantidad,str):
-        new_cotizacion=Cotizacion(cantidad=cantidad, user_id=user.id, equipo_id=equipo)
-        db.session.add(new_cotizacion)
-        db.session.commit()
-        msg="Cotizacon registrada"
-        return jsonify({"msg":msg, "detalles":new_cotizacion.serialize()})
-    else:
-        return jsonify({"msg":"invalid data type"}),400
     
+    new_cotizacion=Cotizacion(cantidad=cantidad, user_id=user.id, equipo_id=equipo)
+    db.session.add(new_cotizacion)
+    db.session.commit()
+    msg="Cotizacon registrada"
+    return jsonify({"msg":msg, "detalles":new_cotizacion.serialize()})
+ 
+@api.route("/buscotizacion",methods=["GET"])
+@jwt_required()
+def get_cotizacion():
+    associations=Cotizacion.query.all()
 
+    return jsonify([cotizacion.serialize() for cotizacion in associations] ),200
+
+@api.route
+@api.route('/paises',methods=['GET'])
+def paises():
+    pais=requests.get("https://restcountries.com/v3.1/all?fields=name")
+   
+    return jsonify(pais.json()),200

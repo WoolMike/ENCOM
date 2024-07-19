@@ -26,7 +26,6 @@ export function Header() {
                                     <button type="button" class="btn btn-info">Editar Perfil</button>
                                 </Link>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><Link to="/">
                                     <button type="button" class="btn btn-danger" onClick={actions.logoutUser}>LogOut <i class="fa-solid fa-right-from-bracket"></i></button>
                                 </Link>

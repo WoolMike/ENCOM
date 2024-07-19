@@ -1,4 +1,4 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/loginstyles.css";
@@ -12,14 +12,19 @@ export const Register = () => {
     const [lastname, setLastname] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [name, setName] = useState('');
-    const navigate=useNavigate();
+    const [pais, setPais] = useState([''])
+    const navigate = useNavigate();
 
-    const handleInputChange=()=>{
+    useEffect(() => {
+        actions.getPaises()
+    }, [])
+
+    const handleInputChange = () => {
         setErrorMessage('');
     };
 
-     const handleRegister=async()=>{
-        if (email==="" || password===""|| name===""|| lastname===""|| confirmpassword===""){
+    const handleRegister = async () => {
+        if (email === "" || password === "" || name === "" || lastname === "" || confirmpassword === "") {
             Swal.fire({
                 position: "center",
                 icon: "error",
@@ -28,28 +33,27 @@ export const Register = () => {
                 color: "#FFFFFF",
                 showConfirmButton: false,
                 timer: 1500
-              });
-            return        
-        }else if(password!==confirmpassword){
+            });
+            return
+        } else if (password !== confirmpassword) {
             console.log("Las constraseñas no coinciden")
             setConfirmpassword("")
             setPassword("")
 
-        }else{
+        } else {
             console.log(email)
             console.log(password)
-            const isRegistered=await actions.registerUser(name,lastname,email,password)
+            const isRegistered = await actions.registerUser(name, lastname, email, pais,password)
             console.log(isRegistered)
-            if(isRegistered)
-            {
+            if (isRegistered) {
                 console.log("Usuario registrado")
                 navigate("/dashboard")
-                
-            }else{
+
+            } else {
                 console.log("usuario no registrado")
             }
         }
-     }
+    }
 
     return (
         <div className="imagenfondo">
@@ -61,53 +65,61 @@ export const Register = () => {
                             <h5 className="letrablanca">Don't have an account? <Link to="/login">Login</Link></h5>
                             <div>
                                 <div>
-                                    <input type="text" 
-                                    class="form-control" 
-                                    id="nombre" 
-                                    placeholder="Your Name" 
-                                    label="Nombre"
-                                    value={name}
-                                    onChange={(e)=>{setName(e.target.value)}}
+                                    <input type="text"
+                                        class="form-control"
+                                        id="nombre"
+                                        placeholder="Your Name"
+                                        label="Nombre"
+                                        value={name}
+                                        onChange={(e) => { setName(e.target.value) }}
                                     ></input>
                                 </div>
                                 <div className="mt-3">
-                                    <input type="text" 
-                                    class="form-control" 
-                                    id="email" 
-                                    label="LastName"
-                                    placeholder="Your Last Name"
-                                    value={lastname}
-                                    onChange={(e)=>{setLastname(e.target.value)}}
+                                    <input type="text"
+                                        class="form-control"
+                                        id="lastname"
+                                        label="LastName"
+                                        placeholder="Your Last Name"
+                                        value={lastname}
+                                        onChange={(e) => { setLastname(e.target.value) }}
                                     ></input>
                                 </div>
                                 <div className="mt-3">
-                                    <input type="email" 
-                                    class="form-control" 
-                                    id="email" 
-                                    label="Email"
-                                    placeholder="Your Email"
-                                    value={email}
-                                    onChange={(e)=>{setEmail(e.target.value)}}
+                                    <input type="email"
+                                        class="form-control"
+                                        id="email"
+                                        label="Email"
+                                        placeholder="Your Email"
+                                        value={email}
+                                        onChange={(e) => { setEmail(e.target.value) }}
                                     ></input>
                                 </div>
                                 <div className="mt-3">
-                                    <input type="password" 
-                                    class="form-control" 
-                                    id="inputPassword" 
-                                    label="Password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(e)=>{setPassword(e.target.value)}}
+                                    <select class="form-select form-select-lg mb-3" aria-label="Large select example" value={pais} onChange={(e)=>{setPais(e.target.value)}} >
+                                        <option selected>Pais</option>
+                                        {store.paises && store.paises.map(paises => (
+                                            <option value={paises.name.common}>{paises.name.common}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mt-3">
+                                    <input type="password"
+                                        class="form-control"
+                                        id="inputPassword"
+                                        label="Password"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e) => { setPassword(e.target.value) }}
                                     ></input>
                                 </div>
                                 <div className="mt-3">
-                                    <input type="password" 
-                                    class="form-control" 
-                                    id="inputPassword2"
-                                    label="Password2"
-                                    placeholder=" Confirm Your Password"
-                                    value={confirmpassword}
-                                    onChange={(e)=>{setConfirmpassword(e.target.value)}}
+                                    <input type="password"
+                                        class="form-control"
+                                        id="inputPassword2"
+                                        label="Password2"
+                                        placeholder=" Confirm Your Password"
+                                        value={confirmpassword}
+                                        onChange={(e) => { setConfirmpassword(e.target.value) }}
                                     ></input>
                                 </div>
                             </div>

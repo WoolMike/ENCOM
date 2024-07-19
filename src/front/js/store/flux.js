@@ -18,7 +18,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token:localStorage.getItem("token") || null,
 			profile:JSON.parse(localStorage.getItem("profile")||null),
 			equipos:null,
-			tipos:null
+			tipos:null,
+			paises:null,
+			cotizaciones:JSON.parse(localStorage.getItem("cotizaciones")||null)
 
 		},
 		actions: {
@@ -54,12 +56,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 
 			},
-			 registerUser:async (name,lastname,email,password)=>{
+			 registerUser:async (name,lastname,email,pais,password)=>{
 			 	try{
 			 		let datos={
 			 			email:email,
 						name:name,
 						lastname:lastname,
+						pais:pais,
 			 			password:password
 			 		};
 					const resp=await fetch(process.env.BACKEND_URL+"/api/signup",{
@@ -248,6 +251,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 			 	}catch(error){
 					console.log("valio barriga señor verga")
 					return false
+				}
+			 },
+			 getPaises:async()=>{
+				const store=getStore()
+		
+				try{
+					const resp=await fetch(process.env.BACKEND_URL+"api/paises")
+					const data=await resp.json();
+		
+					if(!resp.ok){
+						throw new Error(data)
+					}
+					setStore({paises:data})
+					return true
+				}
+				catch(error){
+					console.log(error)
+					return false
+				}
+			 },
+			 buscarCotizacion:async()=>{
+				const store=getStore()
+
+				try{
+					const resp=await fetch(process.env.BACKEND_URL+"api/buscotizacion",{
+						method:'GET',
+						headers:{
+							"Content-Type": "application/json",
+							"Authorization":`Bearer ${store.token}`
+						},
+					})
+					if(!resp.ok){
+						console.log("encontro cotizaciones")
+						return false
+					}
+					const data=await resp.json();
+					localStorage.setItem("cotizaciones",JSON.stringify(data));
+					console.log(data)
+					setStore({cotizaciones:data})
+					return true
+				}
+				catch(error){
+					console.log("algo no funciono al buscar la cotizacion")
 				}
 			 }
 		}

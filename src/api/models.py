@@ -6,18 +6,20 @@ class User(db.Model):
     _tablename_='user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    name = db.Column(db.String(120), unique=True, nullable=False)
-    lastname= db.Column(db.String(120),unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    name = db.Column(db.String(120),  nullable=False)
+    lastname= db.Column(db.String(120), nullable=False)
+    pais=db.Column(db.String(120),nullable=False)
+    password = db.Column(db.String(80), nullable=False)
     
 
     def __repr__(self):
         return f'<User {self.email}>'
     
-    def _init_(self,name,lastname,email,password):
+    def _init_(self,name,lastname,email,pais,password):
         self.name=name
         self.lastname=lastname
         self.email=email
+        self.pais=pais
         self.password=password
 
     def serialize(self):
@@ -26,6 +28,7 @@ class User(db.Model):
             "email": self.email,
             "name": self.name,
             "lastname": self.lastname,
+            "pais":self.pais,
             "equipos":[equipo.serialize() for equipo in self.equipos] if self.equipos else None
             # do not serialize the password, its a security breach
         }
@@ -100,6 +103,8 @@ class Cotizacion(db.Model):
             "user_id":self.user_id,
             "equipo_id":self.equipo_id
         }
+
+
 
 
 # class Favorite(db.Model):
